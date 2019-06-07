@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Practica lista elementos</title>
+    <style>
+
+      html{
+      background:url(../www/img/Woods.jpg);
+      }
+
+      #list {
+        background-color: rgba(0, 0, 0, 0.2);
+        margin-left:100px;
+        margin-right:100px;
+      }
+      li {
+        color: white;
+        font-size: 22px;
+        font-style: "Times New Roman";
+        padding: 2px;
+        font-weight:bold;
+      }
+
+      button {
+        color: white;
+        font-size: 18px;
+        background-color: #6200b4;
+        margin-left:30px;
+
+      }
+
+      button:hover{
+      background-color: #ffc900;
+      color: black;
+      }
+
+      input {
+        font-size: 18px;
+        margin-left:100px;
+      }
+
+      #b_Add {
+        color: white;
+        font-size: 18px;
+        background-color: #6200b4;
+      }
+
+      #b_Add:hover{
+      background-color: #ffc900;
+      color: black;
+      }
+      
+
+    </style>
+  </head>
+  <body>
+    <ol id="list"></ol>
+    <input type="text" id="Element" value="">
+    <button id="b_Add" onClick="addElem()">Introduce elemento en la lista</button>
+    <script type="text/javascript">
+
+      //var size = localStorage.length;
+      //var last = "-1";
+      /*
+      // Clave:valor
+      for (var i=0; i < size; i++) {
+        var value = localStorage.getItem(localStorage.key(i));
+        var node = $("<li>"+value+"<button style="+style1+">Borrar</button></li>");
+        $("#list").append(node);
+        if (i == size-1) {
+          var keys = Object.keys(localStorage);
+          last = keys[i];
+        }
+      }*/
+      // JSON
+      var listDatos = JSON.parse(localStorage.getItem("datos"));
+      if (listDatos != null) {
+        for (var i = 0; i < listDatos.length; i++) {
+          $("#list").append("<li>"+listDatos[i]+"<button>Borrar</button></li>");
+        }
+      }
+      function addElem() {
+        // JSON
+        //Recogemos el texto del input y lo guardamos en la variable ElemToAdd
+        var ElemToAdd = $("#Element").val();
+
+        //Controlamos si el usuario ha introducido texto o no
+        if (ElemToAdd != ""){
+          if (listDatos != null) {
+              listDatos.push(ElemToAdd);
+          } else {
+            listDatos = [ElemToAdd];
+          }
+          localStorage.setItem("datos", JSON.stringify(listDatos));
+          var node = $("<li>"+ElemToAdd+"<button>Borrar</button></li>");
+          $("#list").append(node);
+
+          //Para borrar el texto del input
+          $("#Element").val("");
+        } else {
+          alert("El elemento no puede estar vacio.");
+        }
+      }
+      //Boton que elimina un elemento de la lista
+      $('ol').on('click','button', function(){
+        var str = $(this).closest('li').text();
+        var txtList = str.substr(0, str.length-6);
+        $(this).closest('li').remove();
+
+        //Para hacer los puntos anteriores de la Practica
+        //JavaScript
+        //var ElemToAdd = document.getElementById("Element").value;
+        //if (ElemToAdd != ""){
+          //var node = document.createElement("li");
+          //node.appendChild(document.createTextNode(ElemToAdd));
+          //var list = document.getElementById("list");
+          //list.appendChild(node);
+          //Para borrar el texto del input
+          //document.getElementById("Element").value = "";
+        //}
+        //JQuery
+        /*
+        // Clave:valor
+        var ElemToAdd = $("#Element").val();
+        if (ElemToAdd != ""){
+          if (last == "nombre"+size) {
+            localStorage.setItem("nombre"+(size+1), ElemToAdd);
+            var node = $("<li>"+ElemToAdd+"<button style="+style1+">Borrar</button></li>");
+            $("#list").append(node);
+          } else {
+            localStorage.setItem("nombre"+size, ElemToAdd);
+            var node = $("<li>"+ElemToAdd+"<button style="+style1+">Borrar</button></li>");
+            $("#list").append(node);
+          }
+          //Para borrar el texto del input
+          $("#Element").val("");
+        } else {
+          alert("Escribe texto para añadirlo a la lista!");
+        }*/
+
+        /*
+        // Clave:valor
+        var keys = Object.keys(localStorage);
+        for (var i=0; i < localStorage.length; i++){
+          var value = localStorage.getItem(localStorage.key(i));
+          if (value == txt) {
+            localStorage.removeItem(keys[i]);
+            break;
+          }
+        }*/
+        // JSON
+        for (var i = 0; i < listDatos.length; i++) {
+          if (listDatos[i] == txtList){
+            listDatos.splice(i, 1);
+            localStorage.setItem("datos", JSON.stringify(listDatos));
+            break;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
